@@ -1,8 +1,9 @@
-const express = require('express');
+require('dotenv').config();
+var express = require('express');
 
-const port =5000;
+let port = process.env.PORT || 3003;
 
-const app = express();
+var app = express();
 
 
 
@@ -12,4 +13,4 @@ app.get('/',(req,res,next)=>{
 
 
 
-app.listen(port,()=>{console.log('Server is runing on port',port);});
+app.listen(port,()=>console.log('Server is runing on port',port));
