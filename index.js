@@ -2,6 +2,7 @@ require('dotenv').config();
 var express = require('express');
 var mongoose= require('mongoose');
 const Model = require('./models/article');
+const ScannedArticle = require('./models/scannedarticle.js');
 let port = process.env.PORT || 3003;
 
 var app = express();
@@ -21,7 +22,8 @@ app.get('/',(req,res,next)=>{
     });
     
 app.get('/find/:id',(req,res,next)=>{
-
+    
+     
     Model.find({ref : req.params.id},function (err, data) {
     
        
@@ -29,13 +31,15 @@ app.get('/find/:id',(req,res,next)=>{
          else if (Object.keys(data).length === 0) res.send("introuvable");
          else
          {
-          res.send(data);
-         }
-         
-      
-        
-      })
-    });
+          
+          ScannedArticle.create({ref : data[0].ref, date: new Date().toLocaleDateString(),time: new Date().toLocaleTimeString()},function(err,docs){
+          if(err) return console.error(err);
+          res.redirect('/');
+          });
+          
+         } 
+                                                            });
+});
 
 
 
