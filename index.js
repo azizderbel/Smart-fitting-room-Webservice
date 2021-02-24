@@ -13,11 +13,27 @@ console.log("Connected to mongoDB Cloud");
 });
 
 
-
 app.get('/',(req,res,next)=>{
     Model.find(function (err, data) {
         if (err) return console.error(err);
         res.send(data);
+      })
+    });
+    
+app.get('/find/:id',(req,res,next)=>{
+
+    Model.find({ref : req.params.id},function (err, data) {
+    
+       
+         if(err) return console.error(err);
+         else if (Object.keys(data).length === 0) res.send("introuvable");
+         else
+         {
+          res.send(data);
+         }
+         
+      
+        
       })
     });
 
