@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 let scannedarticleSchema = new mongoose.Schema({
-    "ref":String,
     "date":String,
-    "time":String
+    "time":String,
+    "article": {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Model"
+      }
     },
     {collection: "Scanned"}
     );

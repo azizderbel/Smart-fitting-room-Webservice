@@ -20,6 +20,13 @@ app.get('/',(req,res,next)=>{
         res.send(data);
       })
     });
+
+app.get('/scan',(req,res,next)=>{
+  ScannedArticle.find({}).populate('article').exec(function (err, data) {
+          if (err) return console.error(err);
+          res.send(data);
+        })
+});
     
 app.get('/find/:id',(req,res,next)=>{
     
@@ -32,10 +39,11 @@ app.get('/find/:id',(req,res,next)=>{
          else
          {
           
-          ScannedArticle.create({ref : data[0].ref, date: new Date().toLocaleDateString(),time: new Date().toLocaleTimeString()},function(err,docs){
+          ScannedArticle.create({article : data[0]._id, date: new Date().toLocaleDateString(),time: new Date().toLocaleTimeString()},function(err,docs){
           if(err) return console.error(err);
           res.redirect('/');
           });
+          
           
          } 
                                                             });
