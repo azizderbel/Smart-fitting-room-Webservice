@@ -22,7 +22,7 @@ app.get('/',(req,res,next)=>{
     });
 
 app.get('/scan',(req,res,next)=>{
-  ScannedArticle.find({}).populate('article').exec(function (err, data) {
+  Model.find({}).populate('scanne').exec(function (err, data) {
           if (err) return console.error(err);
           res.send(data);
         })
@@ -31,22 +31,34 @@ app.get('/scan',(req,res,next)=>{
 app.get('/find/:id',(req,res,next)=>{
     
      
-    Model.find({ref : req.params.id},function (err, data) {
-    
-       
+    /*Model.find({ref : req.params.id},function (err, data) {
+          
          if(err) return console.error(err);
          else if (Object.keys(data).length === 0) res.send("introuvable");
          else
-         {
-          
+         { 
+
+       
           ScannedArticle.create({article : data[0]._id, date: new Date().toLocaleDateString(),time: new Date().toLocaleTimeString()},function(err,docs){
           if(err) return console.error(err);
           res.redirect('/');
           });
           
-          
-         } 
-                                                            });
+         }
+        
+                                                            });*/
+        const aux=new ScannedArticle({
+            date: new Date().toLocaleDateString(),
+            time: new Date().toLocaleTimeString()
+        });
+        ScannedArticle.create(aux).then(function(docs) {
+    
+     
+      return Model.findOneAndUpdate({ ref: req.params.id }, {$push: {scanne:docs._id}}, { new: true ,useFindAndModify: false});
+        });
+        res.redirect('/');
+    
+    
 });
 
 
