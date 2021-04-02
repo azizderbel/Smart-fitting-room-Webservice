@@ -21,8 +21,14 @@ app.get('/',(req,res,next)=>{
       })
     });
 
-app.get('/scan',(req,res,next)=>{
-  Model.find({}).populate('scanne').exec(function (err, data) {
+app.get('/scan/:ref',(req,res,next)=>{
+  Model.find({ref:req.params.ref}).populate('scanne').exec(function (err, data) {
+          if (err) return console.error(err);
+          res.send(data);
+        })
+});
+app.get('/front/:style',(req,res,next)=>{
+  Model.find({categorie:req.params.style}).select("-_id -scanne").exec(function (err, data) {
           if (err) return console.error(err);
           res.send(data);
         })
